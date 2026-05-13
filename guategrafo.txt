@@ -1,0 +1,8 @@
+Mixco Antigua 100
+Antigua Escuintla 100
+Escuintla Mixco 100
+Mixco CentroPrueba 5
+Antigua CentroPrueba 5
+Escuintla CentroPrueba 5
+CentroPrueba Guatemala 50
+Guatemala Mixco 10
