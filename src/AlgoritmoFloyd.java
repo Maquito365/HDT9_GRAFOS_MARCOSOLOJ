@@ -33,9 +33,8 @@ public class AlgoritmoFloyd<V> {
     public String getShortestPath(V start, V end) {
         int i = vertices.indexOf(start);
         int j = vertices.indexOf(end);
-
-        if (i == -1 || j == -1) return "ERROR: Una o ambas ciudades no existen.";
-        if (dists[i][j] == Double.POSITIVE_INFINITY) return "No hay ruta entre " + start + " y " + end;
+        if (i == -1 || j == -1) return "Error: Ciudad no registrada.";
+        if (dists[i][j] == Double.POSITIVE_INFINITY) return "No hay ruta disponible.";
         
         StringBuilder path = new StringBuilder(start.toString());
         int curr = i;
@@ -43,7 +42,7 @@ public class AlgoritmoFloyd<V> {
             curr = next[curr][j];
             path.append(" -> ").append(vertices.get(curr));
         }
-        return "Distancia: " + dists[i][j] + " KM\nTrayectoria: " + path.toString();
+        return "Distancia total: " + dists[i][j] + " KM\nRuta: " + path.toString();
     }
 
     public V getCenter() {
@@ -52,26 +51,16 @@ public class AlgoritmoFloyd<V> {
         double minMaxDist = Double.POSITIVE_INFINITY;
         V center = null;
 
-        for (int i = 0; i < n; i++) { // i es la ciudad que evaluamos como posible centro
-            double maxDistDesdeI = 0;
-            boolean puedeLlegarATodos = true;
-
-            for (int j = 0; j < n; j++) {
-                if (i != j) {
-                    if (dists[i][j] == Double.POSITIVE_INFINITY) {
-                        puedeLlegarATodos = false;
-                        break;
-                    }
-                    if (dists[i][j] > maxDistDesdeI) maxDistDesdeI = dists[i][j];
-                }
+        for (int j = 0; j < n; j++) {
+            double maxColDist = 0;
+            for (int i = 0; i < n; i++) {
+                if (i != j && dists[i][j] > maxColDist) maxColDist = dists[i][j];
             }
-
-            // El centro es el nodo cuya distancia máxima a cualquier otro es la mínima
-            if (puedeLlegarATodos && maxDistDesdeI < minMaxDist) {
-                minMaxDist = maxDistDesdeI;
-                center = vertices.get(i);
+            if (maxColDist < minMaxDist) {
+                minMaxDist = maxColDist;
+                center = vertices.get(j);
             }
         }
-        return (center == null && !vertices.isEmpty()) ? vertices.get(0) : center;
+        return center;
     }
 }
